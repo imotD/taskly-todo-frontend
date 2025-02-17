@@ -1,0 +1,14 @@
+.header{
+    background-size: cover;
+    height: 20rem;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bg-dark{
+    background-image: url(/src/assets/bg-dark.jpg);
+}
+
+.bg-light{
+    background-image: url(/src/assets/bg-light.jpg);
+}

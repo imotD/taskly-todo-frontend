@@ -1,12 +1,15 @@
-import './styles/global.css'
-import { Home } from './pages'
+import "./styles/global.css";
+import { Home } from "./pages";
+import { Header } from "./components";
 
 function App() {
   return (
     <>
-     <Home />
+      <Header>
+        <Home />
+      </Header>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

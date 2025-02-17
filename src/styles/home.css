@@ -1,0 +1,10 @@
+
+.home{
+    width: 50rem;
+    margin: auto;
+    padding: 5rem 0;
+}
+
+.home-title{
+    letter-spacing: 12px;
+}
