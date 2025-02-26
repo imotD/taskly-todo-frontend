@@ -1,6 +1,7 @@
 // import { useState } from 'react'
 import Light from '../assets/light.svg'
-import Dark from '../assets/dark.svg'
+import { TodoItem, TodoList } from '../components';
+// import Dark from '../assets/dark.svg'
 
 function Home() {
   // const [count, setCount] = useState(0)
@@ -15,9 +16,11 @@ function Home() {
         >
           <span>TODO</span>
 
-          <img src={Light} alt="light" className="w-10 h-10 cursor-pointer
-" />
+          <img src={Light} alt="icon" className="w-10 h-10 cursor-pointer" />
         </div>
+
+        <TodoItem />
+        <TodoList />
       </div>
     </>
   );
