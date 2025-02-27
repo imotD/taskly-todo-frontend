@@ -15,3 +15,15 @@
     background: linear-gradient(135deg, #6a9ff5, #b46be3);
     border-radius: 50%;
 }
+
+.todo-input{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    padding: 8px;
+    border: 1px solid rgb(116, 112, 112);
+    border-radius: 50%;
+
+    left:25px;
+    bottom: 15px;
+} 
