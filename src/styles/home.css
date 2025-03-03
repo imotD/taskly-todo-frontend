@@ -12,9 +12,16 @@
 .todo-circle{
     height: 40px;
     width: 40px;
-    background: linear-gradient(135deg, #6a9ff5, #b46be3);
     border-radius: 50%;
 }
+
+.todo-circle__check{
+    background: linear-gradient(135deg, #6a9ff5, #b46be3);
+}
+
+.todo-circle__none{
+    border: 2px solid;
+};
 
 .todo-input{
     position: absolute;
@@ -27,3 +34,8 @@
     left:25px;
     bottom: 15px;
 } 
+
+.todo-list:not(:last-child){
+    border-bottom: 1px solid rgb(116, 112, 112);
+
+}
