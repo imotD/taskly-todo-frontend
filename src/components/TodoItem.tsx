@@ -10,7 +10,6 @@ function TodoItem() {
   const handleKeydown = (e: any) =>{
     if(e.key === "Enter"){
       e.preventDefault();
-      console.log(todo);
     }
   }
 

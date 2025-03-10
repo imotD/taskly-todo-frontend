@@ -1,32 +1,32 @@
-// import { useState } from 'react'
 import CheckIcon from "../assets/check.svg?react";
 import CancelIcon from "../assets/cancel.svg?react";
+import axios from 'axios';
+import { useQuery } from "@tanstack/react-query";
 
 function TodoList() {
-  // const [count, setCount] = useState(0)
+  interface Todo {
+    id: number;
+    title: string;
+    isCompleted: boolean
+  }
 
-  const todos = [
-    {
-      id: 1,
-      title: "Test",
-      isCompleted: true,
-    },
-    {
-      id: 2,
-      title: "Test 2",
-      isCompleted: false
-    },
-    {
-      id: 3,
-      title: "Test 3",
-      isCompleted: false
-    }
-  ]
+  const fetchTodos = async() => {
+    const response = await axios.get("http://localhost:8080/api/todos");
+    return response.data;
+  }
+
+  const { data:todos, isLoading, isError } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
+
+  if(isLoading) return <div>Loading...</div>
+  if(isError) return <div>Error</div>
 
   return (
     <div className="bg-slate-100 rounded">
-      {todos.map((todo) => (
-        <div className="flex justify-between items-center px-5 py-1 todo-list">
+      {todos.map((todo: Todo) => (
+        <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
           <div className="flex justify-between items-center cursor-pointer">
             <div className="p-2">
               <div className={`todo-circle p-2 ${todo.isCompleted ? "todo-circle__check" : "todo-circle__none"}`}>
@@ -36,6 +36,7 @@ function TodoList() {
 
             <div className={`text-2xl w-full text-left py-5 p-5 ${todo.isCompleted ? 'line-through' : ''}`}>{todo.title}</div>
           </div>
+          
           {/* icon cancel */}
           {
             !todo.isCompleted ?
