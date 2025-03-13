@@ -1,15 +1,41 @@
-import { useState } from "react";
+import axios from "axios";
+import { useRef } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function TodoItem() {
-  const [todo, setTodo] = useState("");
+  const queryClient = useQueryClient();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: any) => {
-    setTodo(e.target.value);
-  };
+
+  const createTodo = async (newTodo: { title:string, isCompleted: boolean }) => {
+    const response = await axios.post("http://localhost:8080/api/todos" , newTodo)
+    return response.data
+  }
+
+
+  const mutation = useMutation(
+    {
+      mutationFn: createTodo,
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: ["todos"]})
+
+        if(inputRef.current){
+          inputRef.current.value = ""
+        }
+      }
+    } 
+  )
 
   const handleKeydown = (e: any) =>{
     if(e.key === "Enter"){
       e.preventDefault();
+
+    const newTodo = {
+      title: e.target.value,
+      isCompleted: false
+    }
+    
+    mutation.mutate(newTodo)
     }
   }
 
@@ -20,10 +46,9 @@ function TodoItem() {
         className="w-full py-5 px-20 text-2xl bg-white rounded "
         id="todo"
         type="text"
+        ref={inputRef}
         placeholder="create todo..."
-        onChange={handleChange}
         onKeyDown={handleKeydown}
-        value={todo}
       ></input>
     </div>
   );

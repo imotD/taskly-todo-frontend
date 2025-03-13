@@ -10,18 +10,19 @@ function TodoList() {
     isCompleted: boolean
   }
 
-  const fetchTodos = async() => {
+  const fetchTodos = async () => {
     const response = await axios.get("http://localhost:8080/api/todos");
     return response.data;
   }
 
-  const { data:todos, isLoading, isError } = useQuery({
+  const { data: todos, isLoading, isError } = useQuery({
     queryKey: ["todos"],
     queryFn: fetchTodos,
+    retry: false,
   });
 
-  if(isLoading) return <div>Loading...</div>
-  if(isError) return <div>Error</div>
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error ya </div>
 
   return (
     <div className="bg-slate-100 rounded">
@@ -36,14 +37,11 @@ function TodoList() {
 
             <div className={`text-2xl w-full text-left py-5 p-5 ${todo.isCompleted ? 'line-through' : ''}`}>{todo.title}</div>
           </div>
-          
+
           {/* icon cancel */}
-          {
-            !todo.isCompleted ?
-              <div className="cursor-pointer">
-                <CancelIcon className="w-10 h-10 text-gray-500" />
-              </div> : ''
-          }
+          <div className="cursor-pointer">
+            <CancelIcon className="w-10 h-10 text-gray-500" />
+          </div>
 
         </div>
       ))}
