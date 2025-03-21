@@ -4,11 +4,11 @@ import { Header } from "./components";
 
 function App() {
   return (
-    <>
+    <div className="container-app container-app__light">
       <Header>
         <Home />
       </Header>
-    </>
+    </div>
   );
 }
 

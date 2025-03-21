@@ -46,6 +46,17 @@ function TodoList() {
         </div>
       ))}
 
+      <div className="flex justify-between mx-10 py-4">
+        <div>{todos.length > 0 ? todos.length : 0} Items left</div>
+        <div className="flex gap-5">
+          <div>All</div>
+          <div>Active</div>
+          <div>Complated</div>
+        </div>
+        <div>
+          <button>Clear Complated</button>
+        </div>
+      </div>
     </div>
   );
 }

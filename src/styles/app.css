@@ -1,0 +1,11 @@
+.container-app{
+  height: 100vh;
+}
+
+.container-app__dark{
+  background-color: #181824;
+}
+
+.container-app__light{
+  background-color: #fafafa;
+}

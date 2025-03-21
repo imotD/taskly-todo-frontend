@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('./header.css');
 @import url('./home.css');
+@import url('./app.css');
 
 #root {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* background-color: #181824; */
-
     font-family: "Josefin Sans", serif;
     font-optical-sizing: auto;
     font-style: normal;
