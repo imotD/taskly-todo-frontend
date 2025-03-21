@@ -25,7 +25,7 @@ function TodoList() {
   if (isError) return <div>Error ya </div>
 
   return (
-    <div className="bg-slate-100 rounded">
+    <div className="bg-white rounded">
       {todos.map((todo: Todo) => (
         <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
           <div className="flex justify-between items-center cursor-pointer">
@@ -40,7 +40,7 @@ function TodoList() {
 
           {/* icon cancel */}
           <div className="cursor-pointer">
-            <CancelIcon className="w-10 h-10 text-gray-500" />
+            <CancelIcon className="w-10 h-10 text-gray-200 hover:text-gray-400" />
           </div>
 
         </div>
