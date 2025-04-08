@@ -18,6 +18,10 @@
   background: linear-gradient(135deg, #6a9ff5, #b46be3);
 }
 
+.todo-circle__default {
+  border: 2px solid #f0f0f2;
+}
+
 .todo-circle__none {
   border: 2px solid #f0f0f2;
 }
