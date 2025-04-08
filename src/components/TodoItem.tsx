@@ -7,8 +7,8 @@ function TodoItem() {
   const inputRef = useRef<HTMLInputElement>(null);
 
 
-  const createTodo = async (newTodo: { title:string, isCompleted: boolean }) => {
-    const response = await axios.post("http://localhost:8080/api/todos" , newTodo)
+  const createTodo = async (newTodo: { title: string, isCompleted: boolean }) => {
+    const response = await axios.post("http://localhost:8080/api/todos", newTodo)
     return response.data
   }
 
@@ -20,25 +20,25 @@ function TodoItem() {
         console.log("tolong cek errornya", error)
       },
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ["todos"]})
+        queryClient.invalidateQueries({ queryKey: ["todos"] })
 
-        if(inputRef.current){
+        if (inputRef.current) {
           inputRef.current.value = ""
         }
       }
-    } 
+    }
   )
 
-  const handleKeydown = (e: any) =>{
-    if(e.key === "Enter"){
+  const handleKeydown = (e: any) => {
+    if (e.key === "Enter") {
       e.preventDefault();
 
-    const newTodo = {
-      title: e.target.value,
-      isCompleted: false
-    }
-    
-    mutation.mutate(newTodo)
+      const newTodo = {
+        title: e.target.value,
+        isCompleted: false
+      }
+
+      mutation.mutate(newTodo)
     }
   }
 

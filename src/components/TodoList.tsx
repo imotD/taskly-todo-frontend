@@ -1,9 +1,11 @@
 import CheckIcon from "../assets/check.svg?react";
 import CancelIcon from "../assets/cancel.svg?react";
 import axios from 'axios';
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function TodoList() {
+
+  const queryClient = useQueryClient();
   interface Todo {
     id: number;
     title: string;
@@ -12,18 +14,35 @@ function TodoList() {
 
   const fetchTodos = async () => {
     const response = await axios.get("http://localhost:8080/api/todos");
-
-    if (response.status == 204) {
-      return [];
-    }
-
-    return response.data;
+    return response.status === 204 ? [] : response.data;
   }
 
-  const { data: todos, isLoading, isError } = useQuery({
+  const { data: todos = [], isLoading, isError } = useQuery<Todo[]>({
     queryKey: ["todos"],
     queryFn: fetchTodos,
     retry: false,
+  });
+
+  const updateTodo = async (id: number) => {
+    const todo = todos.find((todo: Todo) => todo.id === id);
+    if (!todo) return;
+
+    const updatedTodo = {
+      ...todo,
+      isCompleted: !todo.isCompleted
+    }
+
+    await axios.put(`http://localhost:8080/api/todos/${id}`, updatedTodo);
+  }
+
+  const handleUpdateTodo = useMutation({
+    mutationFn: updateTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+    onError: (error) => {
+      console.error("Tolong cek errornya", error);
+    },
   });
 
   if (isLoading) return <div>Loading...</div>
@@ -35,7 +54,7 @@ function TodoList() {
       {todos.length > 0 ?
         todos.map((todo: Todo) => (
           <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
-            <div className="flex justify-between items-center cursor-pointer">
+            <div className="flex justify-between items-center cursor-pointer" onClick={() => handleUpdateTodo.mutate(todo.id)}>
               <div className="p-2">
                 <div className={`todo-circle p-2 ${todo.isCompleted ? "todo-circle__check" : "todo-circle__none"}`}>
                   {todo.isCompleted ? <CheckIcon className="w-6 h-6 text-white stroke-2" /> : ''}
