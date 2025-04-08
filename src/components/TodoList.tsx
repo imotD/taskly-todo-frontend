@@ -12,6 +12,11 @@ function TodoList() {
 
   const fetchTodos = async () => {
     const response = await axios.get("http://localhost:8080/api/todos");
+
+    if (response.status == 204) {
+      return [];
+    }
+
     return response.data;
   }
 
@@ -26,27 +31,35 @@ function TodoList() {
 
   return (
     <div className="bg-white rounded">
-      {todos.map((todo: Todo) => (
-        <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
-          <div className="flex justify-between items-center cursor-pointer">
-            <div className="p-2">
-              <div className={`todo-circle p-2 ${todo.isCompleted ? "todo-circle__check" : "todo-circle__none"}`}>
-                {todo.isCompleted ? <CheckIcon className="w-6 h-6 text-white stroke-2" /> : ''}
+
+      {todos.length > 0 ?
+        todos.map((todo: Todo) => (
+          <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
+            <div className="flex justify-between items-center cursor-pointer">
+              <div className="p-2">
+                <div className={`todo-circle p-2 ${todo.isCompleted ? "todo-circle__check" : "todo-circle__none"}`}>
+                  {todo.isCompleted ? <CheckIcon className="w-6 h-6 text-white stroke-2" /> : ''}
+                </div>
               </div>
+
+              <div className={`text-2xl w-full text-left py-5 p-5 ${todo.isCompleted ? 'line-through' : ''}`}>{todo.title}</div>
             </div>
 
-            <div className={`text-2xl w-full text-left py-5 p-5 ${todo.isCompleted ? 'line-through' : ''}`}>{todo.title}</div>
-          </div>
+            {/* icon cancel */}
+            <div className="cursor-pointer">
+              <CancelIcon className="w-10 h-10 text-gray-200 hover:text-gray-400" />
+            </div>
 
-          {/* icon cancel */}
-          <div className="cursor-pointer">
-            <CancelIcon className="w-10 h-10 text-gray-200 hover:text-gray-400" />
           </div>
-
+        )) :
+        <div className="flex justify-center items-center h-32">
+          <div className="text-2xl text-gray-400">No Todos</div>
         </div>
-      ))}
+      }
 
-      <div className="flex justify-between mx-10 py-4">
+      {/* footer */}
+
+      <div className="flex justify-between mx-10 py-4 text-gray-500">
         <div>{todos.length > 0 ? todos.length : 0} Items left</div>
         <div className="flex gap-5">
           <div>All</div>
