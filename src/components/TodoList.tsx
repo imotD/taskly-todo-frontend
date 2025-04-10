@@ -2,6 +2,7 @@ import CheckIcon from "../assets/check.svg?react";
 import CancelIcon from "../assets/cancel.svg?react";
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 
 function TodoList() {
 
@@ -11,6 +12,8 @@ function TodoList() {
     title: string;
     isCompleted: boolean
   }
+
+  const [filter, setFilter] = useState<string>('all');
 
   const fetchTodos = async () => {
     const response = await axios.get("http://localhost:8080/api/todos");
@@ -25,7 +28,7 @@ function TodoList() {
 
   const updateTodo = async (id: number) => {
     const todo = todos.find((todo: Todo) => todo.id === id);
-    if (!todo) return;
+    if (!todo) return [];
 
     const updatedTodo = {
       ...todo,
@@ -62,6 +65,19 @@ function TodoList() {
     },
   });
 
+  const filteredTodos = useMemo(() => {
+    if (!todos) return [];
+
+    switch (filter) {
+      case 'active':
+        return todos.filter((todo: Todo) => !todo.isCompleted)
+      case 'completed':
+        return todos.filter((todo: Todo) => todo.isCompleted);
+      default:
+        return todos
+    }
+  }, [todos, filter]);
+
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error ya </div>
 
@@ -69,7 +85,7 @@ function TodoList() {
     <div className="bg-white rounded">
 
       {todos.length > 0 ?
-        todos.map((todo: Todo) => (
+        filteredTodos.map((todo: Todo) => (
           <div key={todo.id} className="flex justify-between items-center px-5 py-1 todo-list">
             <div className="flex justify-between items-center cursor-pointer" onClick={() => handleUpdateTodo.mutate(todo.id)}>
               <div className="p-2">
@@ -97,13 +113,13 @@ function TodoList() {
 
       <div className="flex justify-between mx-10 py-4 text-gray-500">
         <div>{todos.length > 0 ? todos.length : 0} Items left</div>
-        <div className="flex gap-5">
-          <div>All</div>
-          <div>Active</div>
-          <div>Complated</div>
+        <div className="flex gap-5 cursor-pointer">
+          <div className={filter === 'all' ? "font-bold" : ''} onClick={() => setFilter('all')}>All</div>
+          <div className={filter === 'active' ? "font-bold" : ''} onClick={() => setFilter('active')}>Active</div>
+          <div className={filter === 'completed' ? "font-bold" : ''} onClick={() => setFilter('completed')}>Completed</div>
         </div>
         <div>
-          <button>Clear Complated</button>
+          <button>Clear Completed</button>
         </div>
       </div>
     </div>
